@@ -10,10 +10,11 @@ public static class HostBuilder
 {
     public static IHost BuildHost(string[] args)
     {
-        if (args.Length > 0 && args[0] == "-h")
+        if (args.Length > 0 && args[0].StartsWith("cs=") == false)
         {
             throw new ArgumentException("Connectionstring Argument: cs=[string]");
         }
+
         var builder = Host.CreateDefaultBuilder(args);
         string? connectionString = null;
         if (args.Length == 0)
@@ -23,9 +24,9 @@ public static class HostBuilder
             if (connectionString is null)
                 throw new ArgumentNullException(nameof(connectionString), "Connectionstring ist leer!");
         }
-        
 
-        builder.ConfigureServices((host,services) =>
+
+        builder.ConfigureServices((host, services) =>
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlite(connectionString ?? host.Configuration["cs"]))
                 .AddSingleton<UserService>()
