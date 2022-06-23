@@ -28,7 +28,7 @@ public static class HostBuilder
 
         builder.ConfigureServices((host, services) =>
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlite(connectionString ?? host.Configuration["cs"]))
+                    options.UseSqlite($"Data Source={connectionString ?? host.Configuration["cs"]}"))
                 .AddSingleton<UserService>()
                 .AddDefaultIdentity<IdentityUser>(options => { options.User.RequireUniqueEmail = true; })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
